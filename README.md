@@ -65,7 +65,7 @@ After the Splunk research team deployed their instance of Cowrie, the first thin
 
 ### cowrie.cfg
 First we start by configuring the Cowrie service it self under `/home/cowrie/cowrie/etc/cowrie.cfg` from Step 5 above. 
-You can see a full configuration example here, but let me highlight the more important toggles. 
+You can see a **full configuration example** [here](cowrie.cfg), but let me highlight the more important toggles. 
 * **hostname** - defaults to svr04, a dead give away this is a Cowrie instance, you want to change this. In our example we used __cloud-webnode34__
 * **interactive\_timeout** - defaults to `180`, I increase it to `300` to make sure we do not disconnect potential attackers from a bad connection early.
 * **kernel\_version** - critical that this is update to reflect the kernel you want to emulate, in our case the default one installed with `Ubuntu 14.04 is 3.13.0-158-generic`
