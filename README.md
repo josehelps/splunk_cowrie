@@ -7,22 +7,23 @@ Deploying and configuring Cowrie is a straightforward process, and integrating i
 
 But the TLDR version is:
 
-* Step 1. Install Dependencies
+#### Step 1. Install Dependencies
 `sudo apt-get install git python-virtualenv libssl-dev libffi-dev build-essential libpython-dev python2.7-minimal authbind`
 
-* Step 2. Create a user account
+#### Step 2. Create a user account
 ```
 $ sudo adduser --disabled-password cowrie
 $ sudo su - cowrie
 ```
 
-* Step 3. Checkout code 
+#### Step 3. Checkout code 
 ```
 $ git clone http://github.com/cowrie/cowrie
 $ cd cowrie
 ```
 
-* Step 4. [Virtual Environment](https://realpython.com/python-virtual-environments-a-primer/#what-is-a-virtual-environment) and requirements.txt
+#### Step 4. [Virtual Environment](https://realpython.com/python-virtual-environments-a-primer/#what-is-a-virtual-environment) and requirements.txt
+
 __Side note, we want to use a python virtual environment here mainly to isolate the OS local python environment from the dependencies we will install for cowrie.__
 
 ```
@@ -35,7 +36,7 @@ $ source cowrie-env/bin/activate
 (cowrie-env) $ pip install splunk-sdk
 ```
 
-* Step 5. Copy configuration file from template 
+#### Step 5. Copy configuration file from template 
 For cowrie configuration file 
 `$ cp etc/cowrie.cfg.dist etc/cowrie.cfg`
 
@@ -45,10 +46,11 @@ List of cowrie allowed username and password
 We will come back to both of these
 
 
-* Step 7. Change listening port to 22
+#### Step 6. Change listening port to 22
 First change your ssh listening port to something other than port 22. Edit `/etc/ssh/sshd_config` change Port to something unique (example 5222) then restart the service `sudo service ssh restart`. Next time you access the machine you should be using 5222 or whatever you had configured here. 
 
 Now let cowrie use port 22 via authbind
+
 ```
 $ sudo apt-get install authbind
 $ sudo touch /etc/authbind/byport/22
@@ -81,7 +83,7 @@ We will leave the output configuration as is for now as we will come back to it 
 `/home/cowrie/cowrie/etc/cowrie.cfg` from step 5 contains all the allowed username and password combinations/regex’s for the honeypot. You can see an example here. You will likely be updating this file consistently as you adjust your honeypot to capture new attacks. When we started running our instances we noticed many failed logins from username pi and random passwords which is associated with the default credentials for raspberry Pi. We adjusted our [userdb.txt](userdb.txt) to include `pi:x:*` and a few days later caught someone dropping this trojan which Tobias Olausson did a great breakdown of here.
 
 ### File system
-The default cowrie filesystem is a for a Debian operating system, Cowrie creates a mapping of the OS file structure and stores it under /home/cowrie/cowrie/share/cowrie/fs.pickle.  You can create a mapping file from any OS via running the included tool createfs. We already created a mapping for ubuntu 14.04 via: 
+The default cowrie filesystem is a for a Debian operating system, Cowrie creates a mapping of the OS file structure and stores it under `/home/cowrie/cowrie/share/cowrie/fs.pickle`.  You can create a mapping file from any OS via running the included tool createfs. We already created a mapping for ubuntu 14.04 via: 
 
 `/home/cowrie/cowrie/bin/createfs -l /. -o/home/cowrie/cowrie/share/cowrie/ubuntu14.04.pickle -p`
 
@@ -90,11 +92,11 @@ Here we are telling the tool to use the source file system from the current mach
 ### txtcmd
 Cowrie being a medium interaction honeypot it does not actually run a full operating system, but instead emulates one. As part of this most command outputs like mount and df are actually faked. We have to update the default outputs with more believable ones for a Ubuntu host running on AWS (in our case). In order to do this you can find and populate the respective commands out under the `/home/cowrie/cowrie/share/cowrie/txtcmds` directory. A few we updated for our instance were:
 
-* bin/dmesg 
-* bin/mount
-* bin/lscpu
-* bin/df
-* usr/bin/lscpu
+* `bin/dmesg` 
+* `bin/mount`
+* `bin/lscpu`
+* `bin/df`
+* `usr/bin/lscpu`
 
 You can see their content [here](txtcmds).
 
