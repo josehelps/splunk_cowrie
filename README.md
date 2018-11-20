@@ -24,7 +24,7 @@ $ cd cowrie
 
 #### Step 4. [Virtual Environment](https://realpython.com/python-virtual-environments-a-primer/#what-is-a-virtual-environment) and requirements.txt
 
-__Side note, we want to use a python virtual environment here mainly to isolate the OS local python environment from the dependencies we will install for cowrie.__
+_Side note, we want to use a python virtual environment here mainly to isolate the OS local python environment from the dependencies we will install for cowrie._
 
 ```
 $ pwd
