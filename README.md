@@ -1,11 +1,15 @@
 # Splunk Cowrie Getting Started Guide
 
 ## Installation and Dependencies
-Deploying and configuring Cowrie is a straightforward process, and integrating it with Splunk is a cakewalk. You can find Cowrie installation steps here for an Debian/Ubuntu OS. Alternatively you can run it as a docker container via:
+Deploying and configuring Cowrie is a straightforward process, and integrating it with Splunk is a cakewalk with our easy button. Just start an AWS Ubuntu 14.04 instance.
 
-`docker pull cowrie/cowrie`
+Run the following in the terminal:
+```
+wget -q https://raw.githubusercontent.com/d1vious/splunk_cowrie/master/easy_button.sh
+sudo ./easy_button.sh -s <splunk server url> -t <splunk HEC auth token>
+```
 
-But the TLDR version is:
+But if curious how it is built and modified read below:
 
 #### Step 1. Install Dependencies
 `sudo apt-get install git python-virtualenv libssl-dev libffi-dev build-essential libpython-dev python2.7-minimal authbind`
