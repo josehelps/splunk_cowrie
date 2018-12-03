@@ -3,7 +3,7 @@
 ## Installation and Dependencies
 Deploying and configuring Cowrie is a straightforward process, and integrating it with Splunk is a cakewalk with our easy button. Just start an AWS Ubuntu 14.04 instance.
 
-Run the following in the terminal:
+**To deploy run the following:**
 ```
 wget -q https://raw.githubusercontent.com/d1vious/splunk_cowrie/master/easy_button.sh
 sudo ./easy_button.sh -s <splunk server url> -t <splunk HEC auth token>
