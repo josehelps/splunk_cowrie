@@ -49,16 +49,9 @@ We will come back to both of these
 #### Step 6. Change listening port to 22
 First change your ssh listening port to something other than port 22. Edit `/etc/ssh/sshd_config` change Port to something unique (example 5222) then restart the service `sudo service ssh restart`. Next time you access the machine you should be using 5222 or whatever you had configured here. 
 
-Now let cowrie use port 22 via authbind
+Now let cowrie use port 22 via iptables redirect
 
-```
-$ sudo apt-get install authbind
-$ sudo touch /etc/authbind/byport/22
-$ sudo chown cowrie:cowrie /etc/authbind/byport/22
-$ sudo chmod 770 /etc/authbind/byport/22
-```
-
-Then edit `bin/cowrie` and modify the `AUTHBIND_ENABLED` to `AUTHBIND_ENABLED=yes`
+`$ sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222`
 
 ## Configuration 
 After the Splunk research team deployed their instance of Cowrie, the first thing we learned was that making it interesting to an attacker was as important as anything we would do with it. This meant making sure that the honeypot was configured to feel and look like the environment you are trying to mimic. In my case I was going for an Ubuntu 14.04 linux server. 
