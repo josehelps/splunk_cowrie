@@ -69,19 +69,6 @@ function generatehostname {
 	# set hostname
 }
 
-function switchssh {
-    touch /etc/authbind/byport/22
-    chown cowrie:cowrie /etc/authbind/byport/22
-    chmod 770 /etc/authbind/byport/22
-    PORT=$(echo 9$RANDOM | cut -c1-4)
-    sed -i -e "s/#Port 22/Port $PORT/g" /etc/ssh/sshd_config
-    echo "\n!!!Warning SSH port has been changed to: $PORT!!!"
-    echo "!Next time logging in use this port (eg.. ssh -p $PORT <user>@<host>!"
-    echo "!Or set your own port in /etc/ssh/sshd_config. Do not forgot to update your Firewall!\n"
-    service ssh restart
-    sed -i -e "s/AUTHBIND_ENABLED=no/AUTHBIND_ENABLED=yes/g" $COWRIE_HOME/cowrie/bin/cowrie
-}
-
 # MAIN
 echo "### Starting Cowrie Configuration ###"
 echo "Installing dependencies       (00%)"
@@ -98,10 +85,21 @@ configure
 
 echo "Setting config parameters     (85%)"
 generatehostname
-sed -i -e 's/<configured_hostname>/$HOSTNAME/g' $COWRIE_HOME/cowrie/etc/cowrie.cfg
-sed -i -e 's/<configured_splunk_server>/$SPLUNK_HOST/g' $COWRIE_HOME/cowrie/etc/cowrie.cfg
+hostname $HOSTNAME
+sed -i -e "s/<configured_hostname>/$HOSTNAME/g" $COWRIE_HOME/cowrie/etc/cowrie.cfg
+SPLUNK_HOST_escaped=$(sed 's|/|\\/|g' <<< $SPLUNK_HOST)
+sed -i -e "s/<configured_splunk_server>/$SPLUNK_HOST_escaped/g" $COWRIE_HOME/cowrie/etc/cowrie.cfg
+sed -i -e "s/<configured_splunk_token>/$SPLUNK_TOKEN/g" $COWRIE_HOME/cowrie/etc/cowrie.cfg
 
 echo "Switching ssh		    (95%)"
-switchssh
-
+iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
 echo "### Completed (100%)###"
+echo ""
+su cowrie -c "/home/cowrie/cowrie/bin/cowrie start > /dev/null 2>&1"
+echo "started cowrie using: sudo su cowrie -c '/home/cowrie/cowrie/bin/cowrie start'"
+echo "cowrie dir: $COWRIE_HOME/cowrie"
+echo "cowrie config: $COWRIE_HOME/cowrie/etc/cowrie.conf"
+echo "cowrie logs: $COWRIE_HOME/cowrie/var/log/cowrie/cowrie.log"
+echo "cowrie allowed passwords: $COWRIE_HOME/cowrie/etc/userdb.txt"
+echo "cowrie downloads: $COWRIE_HOME/cowrie/var/lib/cowrie/downloads"
+echo "cowrie ttys: $COWRIE_HOME/cowrie/var/lib/cowrie/tty"
