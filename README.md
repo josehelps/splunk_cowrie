@@ -68,7 +68,7 @@ First we start by configuring the Cowrie service it self under `/home/cowrie/cow
 You can see a **full configuration example** [here](cowrie.cfg), but let me highlight the more important toggles. 
 * **hostname** - defaults to svr04, a dead give away this is a Cowrie instance, you want to change this. In our example we used __cloud-webnode34__
 * **interactive\_timeout** - defaults to `180`, I increase it to `300` to make sure we do not disconnect potential attackers from a bad connection early.
-* **kernel\_version** - critical that this is update to reflect the kernel you want to emulate, in our case the default one installed with `Ubuntu 14.04 is 3.13.0-158-generic`
+* **kernel\_version** - critical that this is update to reflect the kernel you want to emulate, in our case the default one installed with Ubuntu 14.04 is `3.13.0-158-generic`
 * **kernel\_build\_string** - same as above, each OS is slightly different, in our case `##208-Ubuntu SMP Fri Aug 24 17:07:38 UTC 2018` 
 * **version** - SSH banner version to display for a connecting client, make sure this matches your OS’s, in our case for a default install is: `SSH-2.0-OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.10`
 * **listen\_endpoints** - because we updated our ssh settings so Cowrie can use port 22 for the honeypot we must configure it here, we set `tcp:22:interface=0.0.0.0`
