@@ -1,7 +1,7 @@
 # Splunk Cowrie Getting Started Guide
 
 ## Installation and Dependencies
-Deploying and configuring Cowrie is a straightforward process, and integrating it with Splunk is a cakewalk with our easy button. Just start an AWS Ubuntu 14.04 instance.
+Deploying and configuring Cowrie is a straightforward process, and integrating it with Splunk is a cakewalk with our [easy button](easy_button.sh). Just begin by starting an AWS Ubuntu instance, then:
 
 **To deploy run the following:**
 ```
